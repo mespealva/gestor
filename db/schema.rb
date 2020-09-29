@@ -12,6 +12,43 @@
 
 ActiveRecord::Schema.define(version: 2020_09_28_054935) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.string "desc"
+    t.string "product", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "outdoors", force: :cascade do |t|
+    t.string "name"
+    t.string "direction"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_outdoors_on_name", unique: true
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.string "imge_url"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.string "desc"
+    t.integer "price"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_products_on_category_id"
+  end
+
   create_table "proyects", force: :cascade do |t|
     t.string "nombre"
     t.text "desc"
@@ -22,4 +59,5 @@ ActiveRecord::Schema.define(version: 2020_09_28_054935) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "products", "categories"
 end
